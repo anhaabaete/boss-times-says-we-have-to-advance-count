@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantas vezes Antoniali disse:</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #container {
+            margin-top: 50px;
+            text-align: center;
+        }
+        #stats {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div id="stats">
+        <p>Média por dia: <span id="dailyAverage"></span></p>
+        <p>Média por semana: <span id="weeklyAverage"></span></p>
+    </div>
+    <div id="container">
+        <h1>Quantas vezes Antoniali disse:</h1>
+        <p id="counter"></p>
+    </div>
+
+    <script>
+        // Data de início do contador
+        const startDate = new Date('2023-07-01T00:00:00Z');
+        
+        // Função para calcular a diferença em milissegundos
+        function getTimeDifferenceInMilliseconds(startDate, endDate) {
+            return endDate - startDate;
+        }
+
+        // Função para calcular a contagem total com base na diferença de tempo e o intervalo de 6 horas
+        function calculateTotalCount(startDate) {
+            const now = new Date();
+            const timeDifferenceInMillis = getTimeDifferenceInMilliseconds(startDate, now);
+            const sixHoursInMillis = 6 * 60 * 60 * 1000;
+            return Math.floor(timeDifferenceInMillis / sixHoursInMillis);
+        }
+
+        // Função para atualizar a contagem e as médias
+        function updateCounts() {
+            const totalCount = calculateTotalCount(startDate);
+            document.getElementById('counter').innerText = totalCount;
+
+            const daysElapsed = (new Date() - startDate) / (24 * 60 * 60 * 1000);
+            const dailyAverage = (totalCount / daysElapsed).toFixed(2);
+            document.getElementById('dailyAverage').innerText = dailyAverage;
+
+            const weeksElapsed = daysElapsed / 7;
+            const weeklyAverage = (totalCount / weeksElapsed).toFixed(2);
+            document.getElementById('weeklyAverage').innerText = weeklyAverage;
+        }
+
+        // Atualizar a contagem ao carregar a página
+        window.onload = updateCounts;
+    </script>
+</body>
+</html>
